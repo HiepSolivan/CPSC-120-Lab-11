@@ -1,9 +1,12 @@
-// TODO add a header
+// Umer Anwar
+// UmerAnwar@csu.fullerton.edu
+// @UmerAnwar05
+// Partners: @HiepSolivan
+
+#include "pizzas.h"
 
 #include <fstream>
 #include <iostream>
-
-#include "pizzas.h"
 
 std::vector<std::vector<std::string>> ReadCSV(const std::string& csv_filename,
                                               int columns) {
@@ -31,63 +34,32 @@ std::vector<std::vector<std::string>> ReadCSV(const std::string& csv_filename,
   return table;
 }
 
-// TODO: complete the definition of this constructor.
-// Since this is a constructor, it should use a member initialization
-// list to initialize data members.
-// When you are done, delete this comment.
-Pizza::Pizza(std::string pizza_id, double price, int calories) {}
-
-// TODO: complete the definition of this constructor.
-// Since this is a constructor, it should use a member initialization list
-// to initialize data members.
-// When you are done, delete this comment.
-Pizza::Pizza() {}
-
-// TODO: write statements to implement this function, and delete
-// this comment.
-// Hint: This is a simple accessor function. The function definition only
-// needs to be a single statement.
-std::string Pizza::PizzaID() const {
-  // TODO: delete the return statement below
-  return "";
-}
-
-// TODO: write statements to implement this function, and delete
-// this comment.
-// Hint: This is a simple accessor function. The function definition
-// only needs to be a single statement.
-double Pizza::Price() const {
-  // TODO: delete the return statement below
-  return 0.0;
-}
-
-// TODO: write statements to implement this function, and delete
-// this comment.
-// Hint: This is a simple accessor function. The function definition
-// only needs to be a single statement.
-int Pizza::Calories() const {
-  // TODO: delete the return statement below
-  return 0;
-}
-
-// TODO: write statements to implement this function, and delete
-// this comment.
-// Hint: the price-per-2000 calories is the ratio between the
-// price of that pizza and its number of calories it has,
-// multiplied by 2000.
+Pizza::Pizza(std::string pizza_id, double price, int calories)
+    : pizza_id_(pizza_id), price_(price), calories_(calories) {}
+Pizza::Pizza() : price_(0.0), calories_(0) {}
+std::string Pizza::PizzaID() const { return pizza_id_; }
+double Pizza::Price() const { return price_; }
+int Pizza::Calories() const { return calories_; }
 double Pizza::PricePer2000Calories() const {
-  // TODO: delete the return statement below
-  return 0;
+  return ((price_ / calories_) * 2000);
 }
-
-// TODO: write statements to implement this function, and delete
-// this comment.
 std::vector<Pizza> ReadPizzas(const std::string& csv_filename) {
-  // Create an empty vector of Pizzas
-  // Call ReadCSV to create a 2D vector of strings
-  // Loop through each row of the CSV but skip the header row
-  // which is the first row, that contains the names of the
-  // columns, i.e. do not read the first row
+  std::vector<Pizza> pizzas;
+  std::vector<std::vector<std::string>> pizza_table = ReadCSV(csv_filename, 9);
+  int count{2};
+  for (int j = 1; j < pizza_table.size(); ++j) {
+    std::string string_pizza_id(pizza_table[j][1]);
+    std::string string_price(pizza_table[j][3]);
+    std::string string_calories(pizza_table[j][4]);
+    count++;
+    double price = std::stod(string_price);
+    int calories = std::stoi(string_calories);
+    Pizza new_pizza(string_pizza_id, price, calories);
+    std::cout << count << std::endl;
+    std::cout << "Name: " << new_pizza.PizzaID() << std::endl;
+    std::cout << "Calories: " << new_pizza.Calories() << std::endl;
+    pizzas.push_back(new_pizza);
+  }
   // - Read the vector of strings at row j
   // - Retrieve the pizza_id (as a string) from column 1
   // - Retrieve the price (as a string) from column 3
@@ -96,8 +68,5 @@ std::vector<Pizza> ReadPizzas(const std::string& csv_filename) {
   // - Convert the string at column 4 into an integer
   // - Create an object of class Pizza with the data from columns 1, 3, and 4
   // - Add the object with push_back to the vector of objects of class Pizza
-  // TODO: delete the return statement below
-  return std::vector<Pizza>{};
-  // and replace it with one that actually works, which is the
-  // vector of pizzas
+  return pizzas;
 }
